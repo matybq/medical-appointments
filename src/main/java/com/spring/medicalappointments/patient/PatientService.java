@@ -1,6 +1,7 @@
 package com.spring.medicalappointments.patient;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.medicalappointments.patient.dto.PatientRequest;
+import com.spring.medicalappointments.patient.dto.PatientResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,6 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
-    @Autowired
     public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
@@ -21,24 +21,37 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> getPatientById(Long id) {
-        return patientRepository.findById(id);
+    public Optional<PatientResponse> getPatientById(Long id) {
+        Optional<Patient> patient = patientRepository.findById(id);
+        if (patient.isPresent()) {
+            Patient patientGetted = patient.get();
+            PatientResponse patientResponse =
+                    new PatientResponse(patientGetted.getName(),
+                    patientGetted.getEmail(),
+                    patientGetted.getDob());
+            return Optional.of(patientResponse);
+        }
+
+        return Optional.empty();
     }
 
-    public void addPatient(Patient patient) {
-        if (patientRepository.findByEmail(patient.getEmail()).isPresent()) {
+    public void addPatient(PatientRequest patientRequest) {
+        if (patientRepository.findByEmail(patientRequest.email()).isPresent()) {
             throw new IllegalStateException("A user with that email already exists. Try with another email");
         }
+
+        Patient patient = new Patient(patientRequest.name(), patientRequest.email(), patientRequest.dob());
         patientRepository.save(patient);
     }
 
-    public void updatePatient(Long id, Patient patient) {
+    public void updatePatient(Long id, PatientRequest patientRequest) {
 
-        Patient updatedPatient = getPatientById(id)
-                .orElseThrow(() -> new NoSuchElementException("Patient" + id + "NOT FOUND"));
-        updatedPatient.setName(patient.getName());
-        updatedPatient.setEmail(patient.getEmail());
-        updatedPatient.setDob(patient.getDob());
+        Patient updatedPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Patient: " + id + "NOT FOUND"));
+
+        updatedPatient.setName(patientRequest.name());
+        updatedPatient.setEmail(patientRequest.email());
+        updatedPatient.setDob(patientRequest.dob());
         patientRepository.save(updatedPatient);
     }
 

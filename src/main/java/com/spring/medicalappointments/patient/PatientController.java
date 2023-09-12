@@ -1,8 +1,9 @@
 package com.spring.medicalappointments.patient;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.medicalappointments.patient.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.Optional;
 public class PatientController {
     private final PatientService patientService;
 
-    @Autowired
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
@@ -25,21 +25,21 @@ public class PatientController {
     }
 
     @GetMapping("/patients/{id}")
-    public Optional<Patient> getPatientById(@PathVariable Long id) {
+    public Optional<PatientResponse> getPatientById(@PathVariable Long id) {
         return patientService.getPatientById(id);
     }
 
     @PostMapping("/addpatient")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
-        patientService.addPatient(patient);
-        return ResponseEntity.ok().body("Patient: " + patient.getName() + " registered succesfully");
+    public ResponseEntity<?> addPatient(@Validated @RequestBody PatientRequest patientRequest) {
+        patientService.addPatient(patientRequest);
+        return ResponseEntity.ok().body("Patient: " + patientRequest.name() + " registered succesfully");
     }
 
     @PutMapping("/updatepatient/{id}")
-    public ResponseEntity<?> updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
-        patientService.updatePatient(id, patient);
-        return ResponseEntity.ok().body("Patient: " + patient.getName() + " UPDATED");
+    public ResponseEntity<?> updatePatient(@PathVariable Long id, @RequestBody PatientRequest patientRequest) {
+        patientService.updatePatient(id, patientRequest);
+        return ResponseEntity.ok().body("Patient: " + patientRequest.name() + " UPDATED");
     }
 
     @DeleteMapping("/deletepatient/{id}")

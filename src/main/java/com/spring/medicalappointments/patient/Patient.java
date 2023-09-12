@@ -2,7 +2,6 @@ package com.spring.medicalappointments.patient;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,7 +18,9 @@ public class Patient {
     @SequenceGenerator(name="patient_sequence", sequenceName="patient_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_sequence")
     private Long id;
+    @NonNull
     private String name;
+    @NonNull
     private String email;
     private LocalDate dob;
     @Transient  //not storaged on the db
