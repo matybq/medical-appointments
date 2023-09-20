@@ -7,11 +7,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
-@RequestMapping(path= "/api")
+@RequestMapping(path= "/api/patient")
 public class PatientController {
     private final PatientService patientService;
 
@@ -19,34 +17,37 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/patients")
-    public List<Patient> getAllPatients() {
+    @GetMapping
+    public List<PatientResponse> getAllPatients() {
         return patientService.getAllPatients();
     }
 
-    @GetMapping("/patients/{id}")
-    public Optional<PatientResponse> getPatientById(@PathVariable Long id) {
+    @GetMapping("/id/{id}")
+    public PatientResponse getPatientById(@PathVariable Long id) {
         return patientService.getPatientById(id);
     }
 
-    @PostMapping("/addpatient")
+    @GetMapping("/name/{name}")
+    public PatientResponse getPatientByName(@PathVariable String name) {
+        return patientService.getPatientByName(name);
+    }
+
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> addPatient(@Validated @RequestBody PatientRequest patientRequest) {
         patientService.addPatient(patientRequest);
-        return ResponseEntity.ok().body("Patient: " + patientRequest.name() + " registered succesfully");
+        return ResponseEntity.ok().body("Patient: " + patientRequest.name() + " REGISTERED SUCCESSFULLY");
     }
 
-    @PutMapping("/updatepatient/{id}")
-    public ResponseEntity<?> updatePatient(@PathVariable Long id, @RequestBody PatientRequest patientRequest) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePatient(@PathVariable Long id, @Validated @RequestBody PatientRequest patientRequest) {
         patientService.updatePatient(id, patientRequest);
-        return ResponseEntity.ok().body("Patient: " + patientRequest.name() + " UPDATED");
+        return ResponseEntity.ok().body("Patient: " +id+" , "+ patientRequest.name() + " UPDATED SUCCESSFULLY");
     }
 
-    @DeleteMapping("/deletepatient/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable Long id) {
-        return patientService.getPatientById(id).map(p -> {
-            patientService.deletePatient(id);
-            return ResponseEntity.ok().body("Patient:  "+id+" DELETED");
-        }).orElseThrow(() -> new NoSuchElementException("Patient: "+id+"NOT FOUND"));
+        patientService.deletePatient(id);
+        return ResponseEntity.ok().body("Patient:  "+id+" DELETED SUCCESSFULLY");
     }
 }

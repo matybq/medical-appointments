@@ -4,4 +4,12 @@ import lombok.NonNull;
 
 import java.time.LocalDate;
 
-public record PatientRequest(@NonNull String name, @NonNull String email, LocalDate dob){}
+public record PatientRequest(
+        @NonNull
+        String password,
+        @NonNull
+        String name,
+        @NonNull
+        String email,
+        LocalDate dob
+) {}
