@@ -4,23 +4,22 @@ import com.spring.medicalappointments.doctor.Doctor;
 import com.spring.medicalappointments.patient.Patient;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
-@Setter
-@Getter
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode
+@NoArgsConstructor
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    private Date date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime date;
     private String detail;
     private TStatus status;
 
@@ -32,7 +31,7 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    public Appointment(Date date, String detail, TStatus status, Doctor doctor, Patient patient) {
+    public Appointment(LocalDateTime date, String detail, TStatus status, Doctor doctor, Patient patient) {
         this.date = date;
         this.detail = detail;
         this.status = status;
@@ -41,7 +40,7 @@ public class Appointment {
     }
 
 
-    public Appointment(Date date, TStatus status) {
+    public Appointment(LocalDateTime date, TStatus status) {
         this.date = date;
         this.status = status;
     }
@@ -54,11 +53,15 @@ public class Appointment {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
+        return date.toLocalDate();
+    }
+
+    public LocalDateTime getDateAndHour() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDateAndHour(LocalDateTime date) {
         this.date = date;
     }
 

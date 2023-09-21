@@ -4,25 +4,15 @@ import com.spring.medicalappointments.appointment.Appointment;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
 @Entity
 @Table
-@Setter
-@Getter
 @RequiredArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Patient {
-
-    @Serial
-    private static final long serialVersionUID = 65981149772133526L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +20,8 @@ public class Patient {
     private Long id;
     @NonNull
     private String name;
-    @NonNull
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
-
     private String password;
     private LocalDate dob;
     @Transient  //not storaged on the db
@@ -46,6 +35,10 @@ public class Patient {
         this.name = name;
         this.email = email;
         this.dob = dob;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -64,34 +57,33 @@ public class Patient {
         return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
-    public Long getId() {
-        return id;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public LocalDate getDob() {
+        return dob;
+    }
+
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
-
 
     public List<Appointment> getAppointments() {
         return appointments;
@@ -99,5 +91,17 @@ public class Patient {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", dob=" + dob +
+                ", age=" + age +
+                '}';
     }
 }

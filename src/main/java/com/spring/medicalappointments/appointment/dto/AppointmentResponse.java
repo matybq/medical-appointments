@@ -3,13 +3,13 @@ package com.spring.medicalappointments.appointment.dto;
 import com.spring.medicalappointments.appointment.TStatus;
 import lombok.NonNull;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record AppointmentResponse(
         @NonNull
         Long id,
         @NonNull
-        Date date,
+        LocalDateTime date,
         String detail,
         @NonNull
         TStatus status,

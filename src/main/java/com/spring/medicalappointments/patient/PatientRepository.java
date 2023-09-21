@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-// type to storage and type of the id
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 

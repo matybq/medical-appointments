@@ -12,7 +12,7 @@ public class AppointmentDTOMapper implements Function<Appointment, AppointmentRe
     public AppointmentResponse apply(Appointment appointment) {
         return new AppointmentResponse(
                 appointment.getId(),
-                appointment.getDate(),
+                appointment.getDateAndHour(),
                 appointment.getDetail(),
                 appointment.getStatus(),
                 appointment.getDoctor().getName(),

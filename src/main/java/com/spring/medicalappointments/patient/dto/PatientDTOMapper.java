@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 @Service
 public class PatientDTOMapper implements Function<Patient, PatientResponse> {
-
     @Override
     public PatientResponse apply(Patient patient) {
         return new PatientResponse(
@@ -18,5 +17,4 @@ public class PatientDTOMapper implements Function<Patient, PatientResponse> {
                 patient.getAge()
         );
     }
-
 }

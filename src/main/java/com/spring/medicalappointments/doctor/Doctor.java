@@ -9,12 +9,7 @@ import java.util.List;
 
 @Entity
 @Table
-@Setter
-@Getter
-@AllArgsConstructor
-@RequiredArgsConstructor
-@ToString
-@EqualsAndHashCode
+@NoArgsConstructor
 public class Doctor {
 
     @Id
@@ -90,5 +85,16 @@ public class Doctor {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", specialty=" + specialty +
+                '}';
     }
 }
