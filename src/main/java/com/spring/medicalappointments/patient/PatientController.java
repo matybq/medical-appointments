@@ -18,18 +18,19 @@ public class PatientController {
     }
 
     @GetMapping
-    public List<PatientResponse> getAllPatients() {
+    public List<PatientResponse> findAllPatients() {
         return patientService.getAllPatients();
     }
 
     @GetMapping("id/{id}")
-    public PatientResponse getPatientById(@PathVariable Long id) {
+    public PatientResponse findPatientById(@PathVariable Long id) {
         return patientService.getPatientById(id);
     }
 
-    @GetMapping("name/{name}")
-    public PatientResponse getPatientByName(@PathVariable String name) {
-        return patientService.getPatientByName(name);
+    @GetMapping("name")
+    public List<PatientResponse> findAllPatientsByName(@RequestParam String name) {
+        String nameToFind = name.toUpperCase().replace("-", " ");
+        return patientService.getAllPatientsByName(nameToFind);
     }
 
     @PostMapping

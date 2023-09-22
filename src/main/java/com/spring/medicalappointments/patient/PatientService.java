@@ -35,10 +35,11 @@ public class PatientService {
                 .orElseThrow(() -> new ApiNotFoundException("Patient: "+id+" not found"));
     }
 
-    public PatientResponse getPatientByName(String name) {
-        return patientRepository.findByName(name)
+    public List<PatientResponse> getAllPatientsByName(String name) {
+        return patientRepository.findAllByNameContaining(name)
+                .stream()
                 .map(patientDTOMapper)
-                .orElseThrow(() -> new ApiNotFoundException("Patient: "+name+" not found"));
+                .collect(Collectors.toList());
     }
 
     public void addPatient(PatientRequest patientRequest) {
@@ -46,7 +47,8 @@ public class PatientService {
             throw new ApiRequestException("A user with that email already exists. Try with another email");
         }
 
-        Patient patient = new Patient(patientRequest.name(), patientRequest.email(), patientRequest.password(), patientRequest.dob());
+        String nameUpperCase = patientRequest.name().toUpperCase();
+        Patient patient = new Patient(nameUpperCase, patientRequest.email(), patientRequest.password(), patientRequest.dob());
         patientRepository.save(patient);
     }
 

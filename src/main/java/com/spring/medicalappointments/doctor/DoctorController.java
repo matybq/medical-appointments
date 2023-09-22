@@ -2,7 +2,6 @@ package com.spring.medicalappointments.doctor;
 
 import com.spring.medicalappointments.doctor.dto.DoctorRequest;
 import com.spring.medicalappointments.doctor.dto.DoctorResponse;
-import com.spring.medicalappointments.patient.dto.PatientResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
